@@ -19,10 +19,12 @@ class User(AbstractBaseUser):
 
     email = models.EmailField(max_length=254, unique=True)
     phone = models.CharField(validators=[phone_regex], max_length=17, null=True, blank=True)
-    role = UserRoles.choices
+    # role = UserRoles.choices()
+    role = models.CharField(max_length=5, choices=UserRoles.choices, default=UserRoles.USER)
     first_name = models.CharField(max_length=64, null=True, blank=True)
     last_name = models.CharField(max_length=64, null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
+    is_active = models.BooleanField(null=True, default=True)
 
     objects = UserManager()
 
