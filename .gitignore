@@ -130,3 +130,6 @@ dmypy.json
 .DS_Store
 .idea/
 ./django_static
+
+skymarket/django_media
+skymarket/django_static

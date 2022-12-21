@@ -19,14 +19,19 @@ class User(AbstractBaseUser):
 
     email = models.EmailField(max_length=254, unique=True)
     phone = models.CharField(validators=[phone_regex], max_length=17, null=True, blank=True)
-    # role = UserRoles.choices()
-    role = models.CharField(max_length=5, choices=UserRoles.choices, default=UserRoles.USER)
+    role = models.CharField(max_length=12, choices=UserRoles.choices, default=UserRoles.USER)
     first_name = models.CharField(max_length=64, null=True, blank=True)
     last_name = models.CharField(max_length=64, null=True, blank=True)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(upload_to="user_images/", null=True, blank=True)
     is_active = models.BooleanField(null=True, default=True)
 
     objects = UserManager()
+
+    @property
+    def image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
+        return None
 
     @property
     def is_admin(self):
@@ -44,11 +49,11 @@ class User(AbstractBaseUser):
     def is_staff(self):
         return self.is_admin
 
-    # def has_perm(self, perm, obj=None):
-    #     return self.is_admin
-    #
-    # def has_module_perms(self, app_label):
-    #     return self.is_admin
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
+
+    def has_module_perms(self, app_label):
+        return self.is_admin
 
     class Meta:
         verbose_name = 'Пользователь'
