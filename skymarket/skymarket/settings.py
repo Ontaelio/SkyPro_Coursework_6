@@ -94,6 +94,31 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 4,
 }
 
+LOGGING = {
+    'disable_existing_loggers': False,
+    'version': 1,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'DEBUG',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+
+        'django.db': {
+            'level': 'DEBUG',
+        },
+    },
+}
+
+DOMAIN = '127.0.0.1:3000'
+SITE_NAME = '127.0.0.1:3000'
+
 DJOSER = {
     'HIDE_USERS': False,
     'PERMISSIONS': {
@@ -107,7 +132,9 @@ DJOSER = {
         'user': 'users.serializers.CurrentUserSerializer',
         'current_user': 'users.serializers.CurrentUserSerializer',
     },
-    'LOGIN_FIELD': 'email'
+    'LOGIN_FIELD': 'email',
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_RETYPE': False
 }
 
 # Database
@@ -175,11 +202,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # TODO эти переменные мы добавили чтобы помочь Вам настроить почтовый ящик на django.
 # TODO теперь Вам необходимо создать файл .env на основе .env.example
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_USE_TLS = True
-EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-EMAIL_PORT = os.environ.get("EMAIL_PORT")
+EMAIL_USE_TLS = False
+EMAIL_HOST = os.environ.get("EMAIL_HOST")  # I use smtp.freesmtpservers.com with no auth for testing
+#EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", None)
+#EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", None)
+EMAIL_PORT = os.environ.get("EMAIL_PORT")  # 25 on smtp.freesmtpservers.com
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'SkyMarket API',
@@ -193,3 +220,6 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = 'users.User'
+
+SERVER_EMAIL='root@localhost.com'
+DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
