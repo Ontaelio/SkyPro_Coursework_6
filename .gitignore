@@ -103,7 +103,6 @@ celerybeat.pid
 
 # Environments
 .env
-.env.example
 .venv
 env/
 venv/
@@ -131,3 +130,6 @@ dmypy.json
 .DS_Store
 .idea/
 ./django_static
+
+skymarket/django_media
+skymarket/django_static
